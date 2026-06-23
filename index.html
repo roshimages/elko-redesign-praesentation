@@ -11,7 +11,7 @@
   .wrap{ max-width:1080px; margin:0 auto; padding:0 22px; }
   h1,h2,h3{ letter-spacing:-.02em; line-height:1.07; }
   .acc{ color:var(--acc); }
-  header.nav{ position:sticky; top:0; z-index:50; background:rgba(10,15,20,.82); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); }
+  header.nav{ position:sticky; top:0; z-index:50; background:rgba(10,15,20,.96); border-bottom:1px solid var(--line); }
   header.nav .wrap{ display:flex; align-items:center; justify-content:space-between; height:60px; }
   .logo{ font-weight:800; font-size:1.05rem; }
   .logo .b{ color:var(--acc); }
@@ -90,8 +90,8 @@
   <h2 class="t">Vorher / Nachher</h2>
   <p class="sub">Die alte Website war ein generisches Template mit einer überladenen Menüleiste und Stockbildern. Der neue Auftritt ist ein eigenständiger, moderner Markenauftritt.</p>
   <div class="ba">
-    <div><div class="vlabel old">✕ VORHER — elko.zuerich</div><video autoplay muted loop playsinline preload="auto"><source src="clips/old-home.mp4" type="video/mp4"><source src="clips/old-home.webm" type="video/webm"></video></div>
-    <div><div class="vlabel new">✓ NACHHER — neuer Auftritt</div><video autoplay muted loop playsinline preload="auto"><source src="clips/new-home.mp4" type="video/mp4"><source src="clips/new-home.webm" type="video/webm"></video></div>
+    <div><div class="vlabel old">✕ VORHER — elko.zuerich</div><video autoplay muted loop playsinline preload="metadata"><source src="clips/old-home.mp4" type="video/mp4"><source src="clips/old-home.webm" type="video/webm"></video></div>
+    <div><div class="vlabel new">✓ NACHHER — neuer Auftritt</div><video autoplay muted loop playsinline preload="metadata"><source src="clips/new-home.mp4" type="video/mp4"><source src="clips/new-home.webm" type="video/webm"></video></div>
   </div>
   <ul class="imp">
     <li>Von einer überladenen Navigation (15+ Punkte) zu einer fokussierten Struktur (6)</li>
@@ -112,11 +112,11 @@
       <li>Konsistente Typografie (Instrument Sans) und elektrisches Grün</li>
     </ul>
   </div>
-  <div><video autoplay muted loop playsinline preload="auto"><source src="clips/new-hero.mp4" type="video/mp4"><source src="clips/new-hero.webm" type="video/webm"></video></div>
+  <div><video autoplay muted loop playsinline preload="metadata"><source src="clips/new-hero.mp4" type="video/mp4"><source src="clips/new-hero.webm" type="video/webm"></video></div>
 </div></div></section>
 
 <section class="block" id="leistungen"><div class="wrap reveal"><div class="split rev">
-  <div><video autoplay muted loop playsinline preload="auto"><source src="clips/new-services.mp4" type="video/mp4"><source src="clips/new-services.webm" type="video/webm"></video></div>
+  <div><video autoplay muted loop playsinline preload="metadata"><source src="clips/new-services.mp4" type="video/mp4"><source src="clips/new-services.webm" type="video/webm"></video></div>
   <div>
     <span class="eyebrow">Leistungen</span>
     <h2 class="t">«Was wir für Sie tun»</h2>
@@ -140,11 +140,11 @@
       <li>Sofortige Glaubwürdigkeit für eine 2024 gegründete Marke</li>
     </ul>
   </div>
-  <div><video autoplay muted loop playsinline preload="auto"><source src="clips/new-group.mp4" type="video/mp4"><source src="clips/new-group.webm" type="video/webm"></video></div>
+  <div><video autoplay muted loop playsinline preload="metadata"><source src="clips/new-group.mp4" type="video/mp4"><source src="clips/new-group.webm" type="video/webm"></video></div>
 </div></div></section>
 
 <section class="block"><div class="wrap reveal"><div class="split rev">
-  <div><video autoplay muted loop playsinline preload="auto"><source src="clips/new-jobs.mp4" type="video/mp4"><source src="clips/new-jobs.webm" type="video/webm"></video></div>
+  <div><video autoplay muted loop playsinline preload="metadata"><source src="clips/new-jobs.mp4" type="video/mp4"><source src="clips/new-jobs.webm" type="video/webm"></video></div>
   <div>
     <span class="eyebrow">Recruiting <span class="badge">NEU</span></span>
     <h2 class="t">«Werde Teil des Teams»</h2>
@@ -183,7 +183,10 @@
 <script>
   const io = new IntersectionObserver((es)=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }), {threshold:.12});
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-  function play(){document.querySelectorAll('video').forEach(v=>{v.muted=true;const p=v.play();if(p)p.catch(()=>{});});}
-  play(); document.addEventListener('click',play,{once:true}); window.addEventListener('scroll',play,{once:true});
+  // toca só os vídeos visíveis; pausa os fora da tela (scroll fluido)
+  const vio = new IntersectionObserver((es)=>es.forEach(e=>{
+    const v=e.target; if(e.isIntersecting){ v.muted=true; const p=v.play(); if(p) p.catch(()=>{}); } else { v.pause(); }
+  }), {threshold:.25});
+  document.querySelectorAll('video').forEach(v=>vio.observe(v));
 </script>
 </body></html>
